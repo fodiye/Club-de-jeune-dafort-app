@@ -1,0 +1,17 @@
+<section id="galerie" class="section gallery">
+  <div class="container">
+    <h2 class="section-title">Notre Galerie</h2>
+    <p class="section-subtitle">Retrouvez les moments forts de nos activités et événements</p>
+
+    <div class="gallery-grid">
+      @for (photo of photos; track photo.id) {
+        <div class="gallery-item" [class]="photo.size">
+          <div class="gallery-placeholder" [style.background]="photo.gradient">
+            <span class="gallery-icon">{{ photo.icon }}</span>
+            <span class="gallery-label">{{ photo.label }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

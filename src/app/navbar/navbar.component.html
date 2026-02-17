@@ -1,0 +1,23 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="nav-container">
+    <a href="#accueil" class="logo">
+      <span class="logo-icon">JA</span>
+      <span class="logo-text">Jeunes en Action</span>
+    </a>
+
+    <button class="menu-toggle" (click)="toggleMenu()" [class.active]="menuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links" [class.open]="menuOpen">
+      <li><a href="#accueil" (click)="closeMenu()">Accueil</a></li>
+      <li><a href="#a-propos" (click)="closeMenu()">À propos</a></li>
+      <li><a href="#activites" (click)="closeMenu()">Activités</a></li>
+      <li><a href="#galerie" (click)="closeMenu()">Galerie</a></li>
+      <li><a href="#equipe" (click)="closeMenu()">Équipe</a></li>
+      <li><a href="#contact" (click)="closeMenu()">Contact</a></li>
+    </ul>
+  </div>
+</nav>

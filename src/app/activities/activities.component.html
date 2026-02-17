@@ -1,0 +1,16 @@
+<section id="activites" class="section activities">
+  <div class="container">
+    <h2 class="section-title">Nos Activités</h2>
+    <p class="section-subtitle">Des activités variées pour le développement et l'épanouissement de la jeunesse</p>
+
+    <div class="activities-grid">
+      @for (activity of activities; track activity.title) {
+        <div class="activity-card">
+          <div class="activity-icon" [style.background]="activity.color">{{ activity.icon }}</div>
+          <h3>{{ activity.title }}</h3>
+          <p>{{ activity.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
