@@ -38,23 +38,31 @@
       }
 
       <form class="contact-form" (ngSubmit)="onSubmit()">
+        @if (success) {
+          <div class="form-message success">Merci pour votre message ! Nous vous répondrons bientôt.</div>
+        }
+        @if (error) {
+          <div class="form-message error">Une erreur est survenue. Veuillez réessayer.</div>
+        }
         <div class="form-group">
           <label for="name">Nom complet</label>
-          <input type="text" id="name" placeholder="Votre nom" required>
+          <input type="text" id="name" [(ngModel)]="form.nom" name="nom" placeholder="Votre nom" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="votre&#64;email.com" required>
+          <input type="email" id="email" [(ngModel)]="form.email" name="email" placeholder="votre&#64;email.com" required>
         </div>
         <div class="form-group">
           <label for="subject">Sujet</label>
-          <input type="text" id="subject" placeholder="Sujet de votre message">
+          <input type="text" id="subject" [(ngModel)]="form.sujet" name="sujet" placeholder="Sujet de votre message">
         </div>
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+          <textarea id="message" [(ngModel)]="form.message" name="message" rows="5" placeholder="Votre message..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Envoyer le message</button>
+        <button type="submit" class="btn btn-primary" [disabled]="sending">
+          {{ sending ? 'Envoi en cours...' : 'Envoyer le message' }}
+        </button>
       </form>
     </div>
   </div>

@@ -73,6 +73,13 @@ export interface Contact {
   whatsapp_url: string;
 }
 
+export interface MessagePayload {
+  nom: string;
+  email: string;
+  sujet: string;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -121,5 +128,9 @@ export class StrapiService {
     return this.http.get<StrapiResponse<Contact>>(`${this.apiUrl}/contact`).pipe(
       map(res => res.data)
     );
+  }
+
+  sendMessage(message: MessagePayload): Observable<any> {
+    return this.http.post(`${this.apiUrl}/messages`, { data: message });
   }
 }
