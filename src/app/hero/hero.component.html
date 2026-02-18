@@ -1,12 +1,13 @@
+@if (hero) {
 <section id="accueil" class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-badge">Association de Jeunes</span>
-    <h1>Jeunes en Action<br><span>de Dafort</span></h1>
-    <p>Ensemble, construisons un avenir meilleur pour notre communauté. Rejoignez le mouvement des jeunes qui font la différence !</p>
+    <span class="hero-badge">{{ hero.badge }}</span>
+    <h1>{{ hero.titre }}<br><span>{{ hero.sous_titre }}</span></h1>
+    <p>{{ hero.description }}</p>
     <div class="hero-buttons">
-      <a href="#contact" class="btn btn-primary">Nous Rejoindre</a>
-      <a href="#a-propos" class="btn btn-secondary">En savoir plus</a>
+      <a [href]="hero.bouton_principal_lien" class="btn btn-primary">{{ hero.bouton_principal_texte }}</a>
+      <a [href]="hero.bouton_secondaire_lien" class="btn btn-secondary">{{ hero.bouton_secondaire_texte }}</a>
     </div>
   </div>
   <div class="hero-scroll">
@@ -14,3 +15,4 @@
     <div class="scroll-indicator"></div>
   </div>
 </section>
+}

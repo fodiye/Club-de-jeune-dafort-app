@@ -4,12 +4,12 @@
     <p class="section-subtitle">Les membres dévoués qui font vivre l'association au quotidien</p>
 
     <div class="team-grid">
-      @for (member of members; track member.name) {
+      @for (member of members; track member.nom) {
         <div class="team-card">
-          <div class="member-avatar" [style.background]="member.color">
-            <span>{{ member.initials }}</span>
+          <div class="member-avatar" [style.background]="member.couleur">
+            <span>{{ member.initiales }}</span>
           </div>
-          <h3>{{ member.name }}</h3>
+          <h3>{{ member.nom }}</h3>
           <span class="member-role">{{ member.role }}</span>
           <p>{{ member.description }}</p>
         </div>

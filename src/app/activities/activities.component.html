@@ -1,13 +1,13 @@
 <section id="activites" class="section activities">
   <div class="container">
     <h2 class="section-title">Nos Activités</h2>
-    <p class="section-subtitle">Des activités variées pour le développement et l'épanouissement de la jeunesse</p>
+    <p class="section-subtitle">Un accompagnement scolaire complet pour la réussite de chaque élève</p>
 
     <div class="activities-grid">
-      @for (activity of activities; track activity.title) {
+      @for (activity of activities; track activity.titre) {
         <div class="activity-card">
-          <div class="activity-icon" [style.background]="activity.color">{{ activity.icon }}</div>
-          <h3>{{ activity.title }}</h3>
+          <div class="activity-icon" [style.background]="activity.couleur">{{ activity.icone }}</div>
+          <h3>{{ activity.titre }}</h3>
           <p>{{ activity.description }}</p>
         </div>
       }

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "membres",
+  "info": {
+    "singularName": "membre",
+    "pluralName": "membres",
+    "displayName": "Membre",
+    "description": "Les membres de l'association"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "nom": {
+      "type": "string",
+      "required": true
+    },
+    "initiales": {
+      "type": "string",
+      "required": true
+    },
+    "role": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "couleur": {
+      "type": "string"
+    },
+    "ordre": {
+      "type": "integer"
+    }
+  }
+}

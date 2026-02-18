@@ -23,20 +23,20 @@
       <div class="footer-links">
         <h4>Activités</h4>
         <ul>
-          <li><a href="#activites">Sport</a></li>
-          <li><a href="#activites">Culture</a></li>
-          <li><a href="#activites">Éducation</a></li>
-          <li><a href="#activites">Environnement</a></li>
+          @for (activity of activities; track activity.titre) {
+            <li><a href="#activites">{{ activity.titre }}</a></li>
+          }
         </ul>
       </div>
 
       <div class="footer-links">
         <h4>Suivez-nous</h4>
         <ul>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">WhatsApp</a></li>
-          <li><a href="#">YouTube</a></li>
+          @if (contact) {
+            <li><a [href]="contact.facebook_url">Facebook</a></li>
+            <li><a [href]="contact.instagram_url">Instagram</a></li>
+            <li><a [href]="contact.whatsapp_url">WhatsApp</a></li>
+          }
         </ul>
       </div>
     </div>

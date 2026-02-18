@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "activites",
+  "info": {
+    "singularName": "activite",
+    "pluralName": "activites",
+    "displayName": "Activite",
+    "description": "Les activités de l'association"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "icone": {
+      "type": "string",
+      "required": true
+    },
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "couleur": {
+      "type": "string",
+      "required": true
+    },
+    "ordre": {
+      "type": "integer"
+    }
+  }
+}

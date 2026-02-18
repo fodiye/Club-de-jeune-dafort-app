@@ -1,0 +1,33 @@
+{
+  "kind": "singleType",
+  "collectionName": "contacts",
+  "info": {
+    "singularName": "contact",
+    "pluralName": "contacts",
+    "displayName": "Contact",
+    "description": "Informations de contact"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "adresse": {
+      "type": "string"
+    },
+    "telephone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "facebook_url": {
+      "type": "string"
+    },
+    "instagram_url": {
+      "type": "string"
+    },
+    "whatsapp_url": {
+      "type": "string"
+    }
+  }
+}

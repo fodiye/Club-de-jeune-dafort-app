@@ -5,6 +5,7 @@ import { AboutComponent } from './about/about.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { TeamComponent } from './team/team.component';
+import { MembersComponent } from './members/members.component';
 import { ContactComponent } from './contact/contact.component';
 import { FooterComponent } from './footer/footer.component';
 
@@ -17,6 +18,7 @@ import { FooterComponent } from './footer/footer.component';
     ActivitiesComponent,
     GalleryComponent,
     TeamComponent,
+    MembersComponent,
     ContactComponent,
     FooterComponent
   ],

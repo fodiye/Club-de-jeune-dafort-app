@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "equipes",
+  "info": {
+    "singularName": "equipe",
+    "pluralName": "equipes",
+    "displayName": "Equipe",
+    "description": "Les membres de l'équipe dirigeante"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "nom": {
+      "type": "string",
+      "required": true
+    },
+    "initiales": {
+      "type": "string",
+      "required": true
+    },
+    "role": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "couleur": {
+      "type": "string"
+    },
+    "ordre": {
+      "type": "integer"
+    }
+  }
+}

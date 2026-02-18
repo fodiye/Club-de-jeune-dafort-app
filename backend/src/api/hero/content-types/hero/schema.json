@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "heroes",
+  "info": {
+    "singularName": "hero",
+    "pluralName": "heroes",
+    "displayName": "Hero",
+    "description": "Section héro de la page d'accueil"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "titre": {
+      "type": "string",
+      "required": true
+    },
+    "sous_titre": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "bouton_principal_texte": {
+      "type": "string"
+    },
+    "bouton_principal_lien": {
+      "type": "string"
+    },
+    "bouton_secondaire_texte": {
+      "type": "string"
+    },
+    "bouton_secondaire_lien": {
+      "type": "string"
+    }
+  }
+}

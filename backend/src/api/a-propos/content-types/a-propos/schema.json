@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "a_propos",
+  "info": {
+    "singularName": "a-propos",
+    "pluralName": "a-propos-list",
+    "displayName": "A Propos",
+    "description": "Section à propos"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "titre_mission": {
+      "type": "string"
+    },
+    "texte_mission": {
+      "type": "richtext"
+    },
+    "titre_vision": {
+      "type": "string"
+    },
+    "texte_vision": {
+      "type": "richtext"
+    }
+  }
+}

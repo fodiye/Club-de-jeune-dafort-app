@@ -1,0 +1,25 @@
+<section id="membres" class="section members">
+  <div class="container">
+    <h2 class="section-title">Nos Membres</h2>
+    <p class="section-subtitle">Tous les membres qui composent notre association</p>
+
+    <div class="members-count">
+      <span class="count-number">{{ members.length }}</span>
+      <span class="count-label">membres actifs</span>
+    </div>
+
+    <div class="members-grid">
+      @for (member of members; track member.nom) {
+        <div class="member-card">
+          <div class="member-avatar" [style.background]="member.couleur">
+            <span>{{ member.initiales }}</span>
+          </div>
+          <div class="member-info">
+            <h3>{{ member.nom }}</h3>
+            <span class="member-role">{{ member.role }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

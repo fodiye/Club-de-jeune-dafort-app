@@ -4,36 +4,38 @@
     <p class="section-subtitle">Une question ? Un projet ? N'hésitez pas à nous écrire</p>
 
     <div class="contact-wrapper">
+      @if (contact) {
       <div class="contact-info">
         <h3>Nos Coordonnées</h3>
         <div class="info-item">
           <span class="info-icon">&#x1F4CD;</span>
           <div>
             <strong>Adresse</strong>
-            <p>Dafort, Sénégal</p>
+            <p>{{ contact.adresse }}</p>
           </div>
         </div>
         <div class="info-item">
           <span class="info-icon">&#x1F4F1;</span>
           <div>
             <strong>Téléphone</strong>
-            <p>+221 XX XXX XX XX</p>
+            <p>{{ contact.telephone }}</p>
           </div>
         </div>
         <div class="info-item">
           <span class="info-icon">&#x2709;&#xFE0F;</span>
           <div>
             <strong>Email</strong>
-            <p>contact&#64;jeunesenaction-dafort.org</p>
+            <p>{{ contact.email }}</p>
           </div>
         </div>
 
         <div class="social-links">
-          <a href="#" class="social-link" aria-label="Facebook">f</a>
-          <a href="#" class="social-link" aria-label="Instagram">in</a>
-          <a href="#" class="social-link" aria-label="WhatsApp">wa</a>
+          <a [href]="contact.facebook_url" class="social-link" aria-label="Facebook">f</a>
+          <a [href]="contact.instagram_url" class="social-link" aria-label="Instagram">in</a>
+          <a [href]="contact.whatsapp_url" class="social-link" aria-label="WhatsApp">wa</a>
         </div>
       </div>
+      }
 
       <form class="contact-form" (ngSubmit)="onSubmit()">
         <div class="form-group">
@@ -42,7 +44,7 @@
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="votre@email.com" required>
+          <input type="email" id="email" placeholder="votre&#64;email.com" required>
         </div>
         <div class="form-group">
           <label for="subject">Sujet</label>
