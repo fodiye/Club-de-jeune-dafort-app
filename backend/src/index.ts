@@ -27,6 +27,7 @@ async function setPublicPermissions(strapi: Core.Strapi) {
     { uid: 'api::hero.hero', actions: ['find'] },
     { uid: 'api::a-propos.a-propos', actions: ['find'] },
     { uid: 'api::contact.contact', actions: ['find'] },
+    { uid: 'api::message.message', actions: ['create'] },
   ];
 
   for (const ct of contentTypes) {
