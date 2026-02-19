@@ -49,9 +49,19 @@ else
     echo "ufw non disponible, vérifiez votre firewall manuellement."
 fi
 
-# 5. Lancement de l'application
+# 5. Génération du .env si absent
 echo ""
-echo "[5/5] Lancement de l'application..."
+echo "[5/6] Vérification du fichier .env..."
+if [ ! -f .env ]; then
+    echo "Fichier .env absent, génération automatique des secrets..."
+    bash init-env.sh
+else
+    echo "Fichier .env trouvé."
+fi
+
+# 6. Lancement de l'application
+echo ""
+echo "[6/6] Lancement de l'application..."
 docker compose up -d --build
 
 echo ""
