@@ -80,6 +80,24 @@ export interface MessagePayload {
   message: string;
 }
 
+export interface Cotisation {
+  id: number;
+  montant: number;
+  date_paiement?: string;
+  annee: number;
+  mois: number;
+  statut: 'paye' | 'en_attente';
+}
+
+export interface Transaction {
+  id: number;
+  type: 'recette' | 'depense';
+  montant: number;
+  description?: string;
+  date: string;
+  categorie?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -132,5 +150,17 @@ export class StrapiService {
 
   sendMessage(message: MessagePayload): Observable<any> {
     return this.http.post(`${this.apiUrl}/messages`, { data: message });
+  }
+
+  getMesCotisations(): Observable<Cotisation[]> {
+    return this.http.get<{ data: Cotisation[] }>(`${this.apiUrl}/cotisations/mine`).pipe(
+      map(res => res.data)
+    );
+  }
+
+  getTransactions(): Observable<Transaction[]> {
+    return this.http.get<StrapiCollectionResponse<Transaction>>(`${this.apiUrl}/transactions?sort=date:desc`).pipe(
+      map(res => res.data)
+    );
   }
 }

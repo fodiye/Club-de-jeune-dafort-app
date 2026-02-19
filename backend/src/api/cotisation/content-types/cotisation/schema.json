@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cotisations",
+  "info": {
+    "singularName": "cotisation",
+    "pluralName": "cotisations",
+    "displayName": "Cotisation",
+    "description": "Cotisations des membres"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "membre": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::membre.membre",
+      "inversedBy": "cotisations"
+    },
+    "montant": {
+      "type": "decimal",
+      "required": true
+    },
+    "date_paiement": {
+      "type": "date"
+    },
+    "annee": {
+      "type": "integer",
+      "required": true
+    },
+    "mois": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 12
+    },
+    "statut": {
+      "type": "enumeration",
+      "enum": ["paye", "en_attente"],
+      "default": "en_attente"
+    }
+  }
+}

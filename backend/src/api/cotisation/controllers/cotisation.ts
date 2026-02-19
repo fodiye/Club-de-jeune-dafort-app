@@ -1,7 +1,7 @@
 import { factories } from '@strapi/strapi';
 
-export default factories.createCoreController('api::membre.membre', ({ strapi }) => ({
-  async findMe(ctx) {
+export default factories.createCoreController('api::cotisation.cotisation', ({ strapi }) => ({
+  async findMine(ctx) {
     const user = ctx.state.user;
     if (!user) {
       return ctx.unauthorized('Vous devez être connecté');
@@ -9,13 +9,17 @@ export default factories.createCoreController('api::membre.membre', ({ strapi })
 
     const membre = await strapi.db.query('api::membre.membre').findOne({
       where: { user: user.id },
-      populate: ['cotisations'],
     });
 
     if (!membre) {
       return ctx.notFound('Aucun membre associé à cet utilisateur');
     }
 
-    return ctx.send({ data: membre });
+    const cotisations = await strapi.db.query('api::cotisation.cotisation').findMany({
+      where: { membre: membre.id },
+      orderBy: [{ annee: 'desc' }, { mois: 'desc' }],
+    });
+
+    return ctx.send({ data: cotisations });
   },
 }));

@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transactions",
+  "info": {
+    "singularName": "transaction",
+    "pluralName": "transactions",
+    "displayName": "Transaction",
+    "description": "Recettes et dépenses de l'association"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": ["recette", "depense"],
+      "required": true
+    },
+    "montant": {
+      "type": "decimal",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "categorie": {
+      "type": "string"
+    }
+  }
+}

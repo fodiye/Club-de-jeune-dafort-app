@@ -529,6 +529,49 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiCotisationCotisation extends Struct.CollectionTypeSchema {
+  collectionName: 'cotisations';
+  info: {
+    description: 'Cotisations des membres';
+    displayName: 'Cotisation';
+    pluralName: 'cotisations';
+    singularName: 'cotisation';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    annee: Schema.Attribute.Integer & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date_paiement: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cotisation.cotisation'
+    > &
+      Schema.Attribute.Private;
+    membre: Schema.Attribute.Relation<'manyToOne', 'api::membre.membre'>;
+    mois: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 12;
+          min: 1;
+        },
+        number
+      >;
+    montant: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    statut: Schema.Attribute.Enumeration<['paye', 'en_attente']> &
+      Schema.Attribute.DefaultTo<'en_attente'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEquipeEquipe extends Struct.CollectionTypeSchema {
   collectionName: 'equipes';
   info: {
@@ -642,11 +685,17 @@ export interface ApiMembreMembre extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    cotisations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cotisation.cotisation'
+    >;
     couleur: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    date_adhesion: Schema.Attribute.Date;
     description: Schema.Attribute.Text;
+    email: Schema.Attribute.Email;
     initiales: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -655,12 +704,19 @@ export interface ApiMembreMembre extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     nom: Schema.Attribute.String & Schema.Attribute.Required;
+    numero_membre: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     ordre: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     role: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -690,6 +746,40 @@ export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
     nom: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     sujet: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTransactionTransaction extends Struct.CollectionTypeSchema {
+  collectionName: 'transactions';
+  info: {
+    description: "Recettes et d\u00E9penses de l'association";
+    displayName: 'Transaction';
+    pluralName: 'transactions';
+    singularName: 'transaction';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    categorie: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.Date & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::transaction.transaction'
+    > &
+      Schema.Attribute.Private;
+    montant: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    type: Schema.Attribute.Enumeration<['recette', 'depense']> &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1210,11 +1300,13 @@ declare module '@strapi/strapi' {
       'api::a-propos.a-propos': ApiAProposAPropos;
       'api::activite.activite': ApiActiviteActivite;
       'api::contact.contact': ApiContactContact;
+      'api::cotisation.cotisation': ApiCotisationCotisation;
       'api::equipe.equipe': ApiEquipeEquipe;
       'api::galerie.galerie': ApiGalerieGalerie;
       'api::hero.hero': ApiHeroHero;
       'api::membre.membre': ApiMembreMembre;
       'api::message.message': ApiMessageMessage;
+      'api::transaction.transaction': ApiTransactionTransaction;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

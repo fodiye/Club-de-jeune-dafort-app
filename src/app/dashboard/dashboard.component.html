@@ -1,0 +1,277 @@
+<section class="dashboard-section">
+  <div class="dashboard-container">
+    @if (loading()) {
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Chargement de votre espace...</p>
+      </div>
+    } @else if (!membre()) {
+      <div class="no-membre">
+        <div class="no-membre-icon">?</div>
+        <h2>Profil non trouvé</h2>
+        <p>Aucun profil membre n'est associé à votre compte.</p>
+      </div>
+    } @else {
+      <!-- Header -->
+      <div class="dashboard-header">
+        <div class="header-left">
+          <div class="header-avatar" [style.background]="selectedTheme().accentHex">
+            {{ membre()!.initiales }}
+          </div>
+          <div>
+            <h1>Bienvenue, {{ membre()!.nom }}</h1>
+            <p>{{ membre()!.role }} &middot; {{ membre()!.numero_membre }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab" [class.active]="activeTab() === 'carte'" (click)="setTab('carte')">
+          <span class="tab-icon">&#9879;</span> Carte
+        </button>
+        <button class="tab" [class.active]="activeTab() === 'cotisations'" (click)="setTab('cotisations')">
+          <span class="tab-icon">&#8364;</span> Cotisations
+        </button>
+        <button class="tab" [class.active]="activeTab() === 'finances'" (click)="setTab('finances')">
+          <span class="tab-icon">&#9776;</span> Finances
+        </button>
+      </div>
+
+      <!-- ==================== CARTE ==================== -->
+      @if (activeTab() === 'carte') {
+        <div class="card-section">
+          <div class="theme-picker">
+            <span class="theme-picker-label">Personnaliser la couleur</span>
+            <div class="theme-options">
+              @for (theme of themes; track theme.id) {
+                <button
+                  class="theme-swatch"
+                  [class.active]="selectedTheme().id === theme.id"
+                  [style.background]="theme.accentHex"
+                  [title]="theme.label"
+                  (click)="selectTheme(theme)"
+                >
+                  @if (selectedTheme().id === theme.id) {
+                    <span class="theme-check">&#10003;</span>
+                  }
+                </button>
+              }
+            </div>
+          </div>
+
+          <div
+            class="membre-card"
+            [style.background]="'linear-gradient(145deg, ' + selectedTheme().bgHex + ' 0%, rgb(' + selectedTheme().bgLight[0] + ',' + selectedTheme().bgLight[1] + ',' + selectedTheme().bgLight[2] + ') 100%)'"
+          >
+            <div
+              class="card-bg-pattern"
+              [style.background]="'radial-gradient(circle at 90% 10%, ' + selectedTheme().accentHex + '1a 0%, transparent 50%), radial-gradient(circle at 10% 90%, ' + selectedTheme().accentHex + '14 0%, transparent 40%)'"
+            ></div>
+            <div class="card-content">
+              <div class="card-top">
+                <div class="card-logo">
+                  <span class="card-logo-icon" [style.background]="selectedTheme().accentHex">JA</span>
+                </div>
+                <div class="card-org-info">
+                  <div class="card-org-name">Jeunes en Action</div>
+                  <div class="card-org-sub">de Dafort</div>
+                </div>
+                <div
+                  class="card-year-badge"
+                  [style.color]="selectedTheme().accentHex"
+                  [style.border-color]="selectedTheme().accentHex + '4d'"
+                  [style.background]="selectedTheme().accentHex + '26'"
+                >{{ currentYear }}</div>
+              </div>
+              <div class="card-divider" [style.background]="'linear-gradient(90deg, transparent, ' + selectedTheme().accentHex + '4d, transparent)'"></div>
+              <div class="card-body">
+                <div class="card-avatar" [style.background]="selectedTheme().accentHex">
+                  <span>{{ membre()!.initiales }}</span>
+                </div>
+                <div class="card-info">
+                  <div class="card-name">{{ membre()!.nom }}</div>
+                  <div class="card-role">{{ membre()!.role }}</div>
+                </div>
+              </div>
+              <div class="card-bottom">
+                <div class="card-detail">
+                  <span class="card-detail-label">N° Membre</span>
+                  <span class="card-detail-value">{{ membre()!.numero_membre }}</span>
+                </div>
+                <div class="card-detail">
+                  <span class="card-detail-label">Statut</span>
+                  <span class="card-detail-value card-status" [style.color]="selectedTheme().accentHex">Actif</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-download" [style.background]="selectedTheme().accentHex" (click)="downloadCarte()">
+            Télécharger en PDF
+          </button>
+        </div>
+      }
+
+      <!-- ==================== COTISATIONS ==================== -->
+      @if (activeTab() === 'cotisations') {
+        <div class="section-panel">
+          <div class="section-title-row">
+            <h2>Mes Cotisations</h2>
+            <span class="section-subtitle">Année {{ currentYear }}</span>
+          </div>
+
+          <div class="stats-grid stats-2">
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-paid">
+                <span>&#10003;</span>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Payé</span>
+                <span class="stat-value">{{ formatMontant(totalPaye()) }}</span>
+                <span class="stat-sub">{{ moisPayes() }} mois</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-pending">
+                <span>&#8987;</span>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">En attente</span>
+                <span class="stat-value">{{ formatMontant(totalEnAttente()) }}</span>
+              </div>
+            </div>
+          </div>
+
+          @if (cotisations().length > 0) {
+            <div class="table-card">
+              <div class="table-header">
+                <h3>Historique</h3>
+              </div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Période</th>
+                      <th>Montant</th>
+                      <th>Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (c of cotisations(); track c.id) {
+                      <tr>
+                        <td>
+                          <span class="cell-main">{{ getMoisLabel(c.mois) }}</span>
+                          <span class="cell-sub">{{ c.annee }}</span>
+                        </td>
+                        <td class="cell-mono">{{ formatMontant(c.montant) }}</td>
+                        <td>
+                          <span class="status-dot" [class.dot-paid]="c.statut === 'paye'" [class.dot-pending]="c.statut === 'en_attente'"></span>
+                          {{ c.statut === 'paye' ? 'Payé' : 'En attente' }}
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          } @else {
+            <div class="empty-state">
+              <div class="empty-icon">&#128203;</div>
+              <p>Aucune cotisation enregistrée</p>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ==================== FINANCES ==================== -->
+      @if (activeTab() === 'finances') {
+        <div class="section-panel">
+          <div class="section-title-row">
+            <h2>Finances de l'association</h2>
+          </div>
+
+          <div class="stats-grid stats-3">
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-recette">
+                <span>&#8593;</span>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Recettes</span>
+                <span class="stat-value stat-value-green">{{ formatMontant(totalRecettes()) }}</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-depense">
+                <span>&#8595;</span>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Dépenses</span>
+                <span class="stat-value stat-value-red">{{ formatMontant(totalDepenses()) }}</span>
+              </div>
+            </div>
+            <div class="stat-card stat-card-highlight" [class.negative]="solde() < 0">
+              <div class="stat-icon stat-icon-solde">
+                <span>&#9878;</span>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Solde</span>
+                <span class="stat-value">{{ formatMontant(solde()) }}</span>
+              </div>
+            </div>
+          </div>
+
+          @if (transactions().length > 0) {
+            <div class="table-card">
+              <div class="table-header">
+                <h3>Dernières transactions</h3>
+              </div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Catégorie</th>
+                      <th class="th-right">Montant</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (t of transactions(); track t.id) {
+                      <tr>
+                        <td>
+                          <span class="cell-main">{{ formatDate(t.date) }}</span>
+                        </td>
+                        <td>
+                          <div class="cell-desc">
+                            <span class="type-indicator" [class.type-recette]="t.type === 'recette'" [class.type-depense]="t.type === 'depense'"></span>
+                            {{ t.description || '-' }}
+                          </div>
+                        </td>
+                        <td>
+                          @if (t.categorie) {
+                            <span class="cat-tag">{{ t.categorie }}</span>
+                          } @else {
+                            <span class="cell-muted">-</span>
+                          }
+                        </td>
+                        <td class="cell-right" [class.text-recette]="t.type === 'recette'" [class.text-depense]="t.type === 'depense'">
+                          {{ t.type === 'recette' ? '+' : '-' }}{{ formatMontant(t.montant) }}
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          } @else {
+            <div class="empty-state">
+              <div class="empty-icon">&#128176;</div>
+              <p>Aucune transaction enregistrée</p>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</section>
