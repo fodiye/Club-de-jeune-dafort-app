@@ -1,6 +1,6 @@
-<nav class="navbar" [class.scrolled]="isScrolled">
+<nav class="navbar" [class.scrolled]="isScrolled" [class.light]="shouldBeLight">
   <div class="nav-container">
-    <a href="#accueil" class="logo">
+    <a routerLink="/" class="logo">
       <span class="logo-icon">JA</span>
       <span class="logo-text">Jeunes en Action</span>
     </a>
@@ -12,13 +12,19 @@
     </button>
 
     <ul class="nav-links" [class.open]="menuOpen">
-      <li><a href="#accueil" (click)="closeMenu()">Accueil</a></li>
-      <li><a href="#a-propos" (click)="closeMenu()">À propos</a></li>
-      <li><a href="#activites" (click)="closeMenu()">Activités</a></li>
-      <li><a href="#galerie" (click)="closeMenu()">Galerie</a></li>
-      <li><a href="#equipe" (click)="closeMenu()">Équipe</a></li>
-      <li><a href="#membres" (click)="closeMenu()">Membres</a></li>
-      <li><a href="#contact" (click)="closeMenu()">Contact</a></li>
+      <li><a routerLink="/" fragment="accueil" (click)="closeMenu()">Accueil</a></li>
+      <li><a routerLink="/" fragment="a-propos" (click)="closeMenu()">À propos</a></li>
+      <li><a routerLink="/" fragment="activites" (click)="closeMenu()">Activités</a></li>
+      <li><a routerLink="/" fragment="galerie" (click)="closeMenu()">Galerie</a></li>
+      <li><a routerLink="/" fragment="equipe" (click)="closeMenu()">Équipe</a></li>
+      <li><a routerLink="/" fragment="membres" (click)="closeMenu()">Membres</a></li>
+      <li><a routerLink="/" fragment="contact" (click)="closeMenu()">Contact</a></li>
+      @if (authService.isAuthenticated()) {
+        <li><a routerLink="/dashboard" class="nav-auth" (click)="closeMenu()">Mon Espace</a></li>
+        <li><a class="nav-auth nav-logout" (click)="logout()">Déconnexion</a></li>
+      } @else {
+        <li><a routerLink="/login" class="nav-auth" (click)="closeMenu()">Espace Membre</a></li>
+      }
     </ul>
   </div>
 </nav>

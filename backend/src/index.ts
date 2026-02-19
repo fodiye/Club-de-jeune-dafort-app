@@ -7,6 +7,9 @@ export default {
     // Set public permissions for all content types
     await setPublicPermissions(strapi);
 
+    // Set authenticated permissions
+    await setAuthenticatedPermissions(strapi);
+
     // Seed data if empty
     await seedData(strapi);
   },
@@ -51,6 +54,52 @@ async function setPublicPermissions(strapi: Core.Strapi) {
   }
 
   console.log('✅ Public permissions configured');
+}
+
+async function setAuthenticatedPermissions(strapi: Core.Strapi) {
+  const authenticatedRole = await strapi.db.query('plugin::users-permissions.role').findOne({
+    where: { type: 'authenticated' },
+  });
+
+  if (!authenticatedRole) return;
+
+  const contentTypes = [
+    // Custom endpoints for authenticated users
+    { uid: 'api::membre.membre', actions: ['findMe'] },
+    { uid: 'api::cotisation.cotisation', actions: ['findMine'] },
+    { uid: 'api::transaction.transaction', actions: ['find'] },
+    // Public content also readable when authenticated
+    { uid: 'api::membre.membre', actions: ['find', 'findOne'] },
+    { uid: 'api::activite.activite', actions: ['find', 'findOne'] },
+    { uid: 'api::galerie.galerie', actions: ['find', 'findOne'] },
+    { uid: 'api::equipe.equipe', actions: ['find', 'findOne'] },
+    { uid: 'api::hero.hero', actions: ['find'] },
+    { uid: 'api::a-propos.a-propos', actions: ['find'] },
+    { uid: 'api::contact.contact', actions: ['find'] },
+    { uid: 'api::message.message', actions: ['create'] },
+  ];
+
+  for (const ct of contentTypes) {
+    for (const action of ct.actions) {
+      const existing = await strapi.db.query('plugin::users-permissions.permission').findOne({
+        where: {
+          role: authenticatedRole.id,
+          action: `${ct.uid}.${action}`,
+        },
+      });
+
+      if (!existing) {
+        await strapi.db.query('plugin::users-permissions.permission').create({
+          data: {
+            role: authenticatedRole.id,
+            action: `${ct.uid}.${action}`,
+          },
+        });
+      }
+    }
+  }
+
+  console.log('✅ Authenticated permissions configured');
 }
 
 async function seedData(strapi: Core.Strapi) {
@@ -140,18 +189,18 @@ async function seedData(strapi: Core.Strapi) {
 
   // Seed Membres
   const membres = [
-    { nom: 'Abdoulaye Diallo', initiales: 'AD', role: 'Président', couleur: 'linear-gradient(135deg, #1B9C85, #148F7A)', ordre: 1 },
-    { nom: 'Aminata Sow', initiales: 'AS', role: 'Vice-Présidente', couleur: 'linear-gradient(135deg, #2563EB, #1D4ED8)', ordre: 2 },
-    { nom: 'Moussa Ba', initiales: 'MB', role: 'Secrétaire Général', couleur: 'linear-gradient(135deg, #8B5CF6, #6D28D9)', ordre: 3 },
-    { nom: 'Fatou Ndiaye', initiales: 'FN', role: 'Trésorière', couleur: 'linear-gradient(135deg, #F59E0B, #D97706)', ordre: 4 },
-    { nom: 'Ousmane Sy', initiales: 'OS', role: 'Membre', couleur: 'linear-gradient(135deg, #EF4444, #DC2626)', ordre: 5 },
-    { nom: 'Mariama Diop', initiales: 'MD', role: 'Membre', couleur: 'linear-gradient(135deg, #EC4899, #DB2777)', ordre: 6 },
-    { nom: 'Ibrahima Camara', initiales: 'IC', role: 'Membre', couleur: 'linear-gradient(135deg, #14B8A6, #0D9488)', ordre: 7 },
-    { nom: 'Aissatou Barry', initiales: 'AB', role: 'Membre', couleur: 'linear-gradient(135deg, #6366F1, #4F46E5)', ordre: 8 },
-    { nom: 'Mamadou Kane', initiales: 'MK', role: 'Membre', couleur: 'linear-gradient(135deg, #F97316, #EA580C)', ordre: 9 },
-    { nom: 'Kadiatou Bah', initiales: 'KB', role: 'Membre', couleur: 'linear-gradient(135deg, #06B6D4, #0891B2)', ordre: 10 },
-    { nom: 'Samba Tall', initiales: 'ST', role: 'Membre', couleur: 'linear-gradient(135deg, #84CC16, #65A30D)', ordre: 11 },
-    { nom: 'Fatoumata Cissé', initiales: 'FC', role: 'Membre', couleur: 'linear-gradient(135deg, #A855F7, #9333EA)', ordre: 12 },
+    { nom: 'Abdoulaye Diallo', initiales: 'AD', role: 'Président', couleur: 'linear-gradient(135deg, #1B9C85, #148F7A)', ordre: 1, numero_membre: 'JA-2026-001' },
+    { nom: 'Aminata Sow', initiales: 'AS', role: 'Vice-Présidente', couleur: 'linear-gradient(135deg, #2563EB, #1D4ED8)', ordre: 2, numero_membre: 'JA-2026-002' },
+    { nom: 'Moussa Ba', initiales: 'MB', role: 'Secrétaire Général', couleur: 'linear-gradient(135deg, #8B5CF6, #6D28D9)', ordre: 3, numero_membre: 'JA-2026-003' },
+    { nom: 'Fatou Ndiaye', initiales: 'FN', role: 'Trésorière', couleur: 'linear-gradient(135deg, #F59E0B, #D97706)', ordre: 4, numero_membre: 'JA-2026-004' },
+    { nom: 'Ousmane Sy', initiales: 'OS', role: 'Membre', couleur: 'linear-gradient(135deg, #EF4444, #DC2626)', ordre: 5, numero_membre: 'JA-2026-005' },
+    { nom: 'Mariama Diop', initiales: 'MD', role: 'Membre', couleur: 'linear-gradient(135deg, #EC4899, #DB2777)', ordre: 6, numero_membre: 'JA-2026-006' },
+    { nom: 'Ibrahima Camara', initiales: 'IC', role: 'Membre', couleur: 'linear-gradient(135deg, #14B8A6, #0D9488)', ordre: 7, numero_membre: 'JA-2026-007' },
+    { nom: 'Aissatou Barry', initiales: 'AB', role: 'Membre', couleur: 'linear-gradient(135deg, #6366F1, #4F46E5)', ordre: 8, numero_membre: 'JA-2026-008' },
+    { nom: 'Mamadou Kane', initiales: 'MK', role: 'Membre', couleur: 'linear-gradient(135deg, #F97316, #EA580C)', ordre: 9, numero_membre: 'JA-2026-009' },
+    { nom: 'Kadiatou Bah', initiales: 'KB', role: 'Membre', couleur: 'linear-gradient(135deg, #06B6D4, #0891B2)', ordre: 10, numero_membre: 'JA-2026-010' },
+    { nom: 'Samba Tall', initiales: 'ST', role: 'Membre', couleur: 'linear-gradient(135deg, #84CC16, #65A30D)', ordre: 11, numero_membre: 'JA-2026-011' },
+    { nom: 'Fatoumata Cissé', initiales: 'FC', role: 'Membre', couleur: 'linear-gradient(135deg, #A855F7, #9333EA)', ordre: 12, numero_membre: 'JA-2026-012' },
   ];
   for (const m of membres) {
     await strapi.db.query('api::membre.membre').create({ data: m });
