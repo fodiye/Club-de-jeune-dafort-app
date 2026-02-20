@@ -19,6 +19,9 @@ TRANSFER_TOKEN_SALT=$(openssl rand -base64 16)
 JWT_SECRET=$(openssl rand -base64 24)
 ENCRYPTION_KEY=$(openssl rand -base64 16)
 
+# Frontend URL (pour le preview mode Strapi)
+CLIENT_URL=http://localhost
+
 # SMTP (optionnel)
 SMTP_HOST=
 SMTP_PORT=587
